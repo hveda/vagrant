@@ -1,0 +1,72 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.vm.box = "ubuntu/trusty64"
+
+# VirtualBox
+# common settings
+  config.vm.provider "virtualbox" do |vb|
+    vb.cpus = 4 # cpu cores, can't be more than the host actually has!
+    vb.memory = 1024
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"] # fixes slow dns lookups
+  end
+
+  config.vm.synced_folder "../projects", "/vagrant"
+
+  #Individual machine settings
+  config.vm.define "machine-0" do |srv|
+    srv.vm.hostname = "machine-0"
+    srv.vm.network :private_network, ip: "192.168.9.2"
+
+    srv.vm.provider "virtualbox" do |vb|
+      vb.name = "Machine-0"
+    end
+
+    # use local ubuntu mirror
+    config.vm.provision :shell, path: "../bootstrap.sh"
+
+    # network
+    config.vm.network "public_network"
+  end
+
+  #Individual machine settings
+  config.vm.define "machine-1" do |srv|
+    srv.vm.hostname = "machine-1"
+    srv.vm.network :private_network, ip: "192.168.9.3"
+
+    srv.vm.provider "virtualbox" do |vb|
+      vb.name = "Machine-1"
+    end
+
+    # use local ubuntu mirror
+    config.vm.provision :shell, path: "../bootstrap.sh"
+
+    # network
+    config.vm.network "public_network"
+  end
+
+  #Individual machine settings
+  config.vm.define "machine-2" do |srv|
+    srv.vm.hostname = "machine-2"
+    srv.vm.network :private_network, ip: "192.168.9.4"
+
+    srv.vm.provider "virtualbox" do |vb|
+      vb.name = "Machine-2"
+    end
+
+    # use local ubuntu mirror
+    config.vm.provision :shell, path: "../bootstrap.sh"
+
+    # network
+    config.vm.network "public_network"
+  end
+
+  # enable logging in via ssh with a password
+  config.ssh.username = "vagrant"
+  config.ssh.password = "vagrant"
+
+end

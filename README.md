@@ -12,3 +12,7 @@ To run:
 - run "vagrant up"
 - wait until the box has finished provisioning
 - ENJOY Script C (read:Skripsi xD)
+
+To run multiple machine:
+- Go into the "/vagrant-nmachine",
+- to connect to machine run "vagrant ssh 'your-machine-name'"

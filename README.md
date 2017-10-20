@@ -1,12 +1,14 @@
-Discover Flask Vagrant
+Simple Vagrant
 =========
 
-A simple Vagrant instance to easily run [Discover-Flask](https://github.com/realpython/discover-flask).
+A simple Vagrant instance.
 
 To run:
 - Git clone the project,
-- go into the "/vagrant" folder
+- edit bootstrap.sh to suit your project,
+- put your project source code to projects folder,
+- go into the "/vagrant" folder,
+- edit Vagrantfile to meet your research hardware requirement,
 - run "vagrant up"
 - wait until the box has finished provisioning
-- go to "http://127.0.0.1:8081"
-- login with the username "admin" and password "admin"
+- ENJOY Script C (read:Skripsi xD)

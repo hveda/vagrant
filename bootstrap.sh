@@ -9,14 +9,14 @@ sudo apt-get -y install build-essential libreadline-gplv2-dev libncursesw5-dev \
 	git-core sloccount
 
 
-# Install Python
+# Install Python & PIP
 sudo apt-get -y install python3.6 python-pip python-dev libpq-dev
 sudo pip install --upgrade pip
 # @see https://pip.pypa.io/en/latest/reference/pip.html
 
 
 # Install Hoaxbot Requirements
-sudo pip install -qq -r /hoax-bot/requirements.txt
+sudo pip install -qq -r /projects/requirements.txt
 
 # Setup Python Config
 APP_SETTINGS="config.ProductionConfig"

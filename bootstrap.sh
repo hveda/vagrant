@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+# add swap
+fallocate -l 4G /swapfile && chmod 0600 /swapfile && mkswap /swapfile && swapon /swapfile && echo '/swapfile none swap sw 0 0' >> /etc/fstab
+echo vm.swappiness = 10 >> /etc/sysctl.conf && echo vm.vfs_cache_pressure = 50 >> /etc/sysctl.conf && sysctl -p
+
+
+# use local ubuntu mirror  
+sed -i 's/archive.ubuntu.com/lv.archive.ubuntu.com/g' /etc/apt/sources.list
+
 # update apt-get
 sudo apt-get update
 
@@ -9,36 +17,18 @@ sudo apt-get -y install build-essential libreadline-gplv2-dev libncursesw5-dev \
 	git-core sloccount
 
 
-# Install Python & PIP
+# Install Python3.6 & PIP
 sudo apt-get -y install python3.6 python-pip python-dev libpq-dev
 sudo pip install --upgrade pip
 # @see https://pip.pypa.io/en/latest/reference/pip.html
 
-
-# Install Hoaxbot Requirements
+# Install projects Requirements
 sudo pip install -qq -r /projects/requirements.txt
+
 
 # Setup Python Config
 APP_SETTINGS="config.ProductionConfig"
 export APP_SETTINGS
-
-
-# Install and Configuring PostgreSQL
-echo "-------------------- installing postgres"
-sudo apt-get -y install postgresql postgresql-contrib
-# fix permissions
-echo "-------------------- fixing listen_addresses on postgresql.conf"
-sudo sed -i "s/#listen_address.*/listen_addresses '*'/" /etc/postgresql/*/main/postgresql.conf
-echo "-------------------- fixing postgres pg_hba.conf file"
-# replace the ipv4 host line with the above line
-sudo cat >> /etc/postgresql/*/main/pg_hba.conf
-# Accept all IPv4 connections - FOR DEVELOPMENT ONLY!!!
-host    all         all         0.0.0.0/0             md5
-EOF
-echo "-------------------- creating postgres vagrant role with password vagrant"
-# Create Role and login
-sudo su postgres -c "psql -c \"CREATE ROLE vagrant SUPERUSER LOGIN PASSWORD 'vagrant'\" "
-sudo /etc/init.d/postgresql restart
 
 
 # Install SQLite3

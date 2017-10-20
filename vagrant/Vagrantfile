@@ -6,6 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "ubuntu/trusty64"
+  config.vm.box_check_update = false
 
   config.vm.network "public_network"
   config.vm.network "forwarded_port", guest: 5000, host: 5000, auto_correct: true
@@ -14,16 +15,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder "../projects", "/vagrant"
 
+  # VirtualBox
   config.vm.provider "virtualbox" do |vb|
-      vb.name = "Veda Machine"
-  end
-
-  config.vm.provider "virtualbox" do |v|
-    v.memory = 1024
-    v.cpus = 2
+    vb.name = "Name" # friendly name that shows up in Oracle VM VirtualBox Manager
+    vb.memory = 1024 # memory in megabytes
+    vb.cpus = 4 # cpu cores, can't be more than the host actually has!
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"] # fixes slow dns lookups
   end
 
 
   config.vm.provision :shell, path: "bootstrap.sh"
+  # enable logging in via ssh with a password
+  config.ssh.username = "vagrant"
+  config.ssh.password = "vagrant"
 
 end
